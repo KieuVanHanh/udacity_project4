@@ -1,0 +1,68 @@
+name: build-test-deploy_environments
+on:
+  workflow_dispatch:
+  push:
+    branches: 
+      - main
+    paths:
+      - 'starter/frontend/**'
+env:
+  # Set Node.js Version
+  NODE_VERSION: 'latest'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v3
+
+    - name: Use Node.js 
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{env.NODE_VERSION}}
+        cache: 'npm'
+        cache-dependency-path: "starter/frontend/package-lock.json"
+
+    - name: Lint job
+      uses: actions/setup-node@v3
+      run: |
+        npm run lint
+  run-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v3
+
+    - name: Use Node.js 
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{env.NODE_VERSION}}
+        cache: 'npm'
+        cache-dependency-path: "starter/frontend/package-lock.json"
+
+    - name: test job
+      uses: actions/setup-node@v3
+      run: |
+        npm run test
+  build:
+    needs: [lint, run-test]
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v3
+
+    - name: Use Node.js 
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{env.NODE_VERSION}}
+        cache: 'npm'
+        cache-dependency-path: "starter/frontend/package-lock.json"
+
+    - name: build job
+      uses: actions/setup-node@v3
+      run: |
+        npm run test
