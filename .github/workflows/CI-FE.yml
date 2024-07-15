@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - 'starter/frontend/**'
-  pull:
+  pull_request:
     branches: 
       - main
 env:
