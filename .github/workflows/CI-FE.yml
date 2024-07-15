@@ -13,6 +13,9 @@ env:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: starter/frontend
     steps:
     - name: Check out repository
       uses: actions/checkout@v3
@@ -30,7 +33,9 @@ jobs:
         npm run lint
   run-test:
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: starter/frontend
     steps:
     - name: Check out repository
       uses: actions/checkout@v3
@@ -49,7 +54,9 @@ jobs:
   build:
     needs: [lint, run-test]
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: starter/frontend
     steps:
     - name: Check out repository
       uses: actions/checkout@v3
