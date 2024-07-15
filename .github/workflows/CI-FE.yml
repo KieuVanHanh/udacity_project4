@@ -6,6 +6,9 @@ on:
       - main
     paths:
       - 'starter/frontend/**'
+  pull:
+    branches: 
+      - main
 env:
   # Set Node.js Version
   NODE_VERSION: 'latest'
