@@ -11,7 +11,8 @@ on:
       - main
     paths:
       - 'starter/backend/**'
-env: PYTHON_VERSION: '3.8'
+env:
+  PYTHON_VERSION: '3.8'
 
 jobs:
   lint:
