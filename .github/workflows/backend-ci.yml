@@ -1,0 +1,75 @@
+name: backend-ci
+on:
+  workflow_dispatch:
+  push:
+    branches: 
+      - main
+    paths:
+      - 'starter/backend/**'
+  pull_request:
+    branches: 
+      - main
+    paths:
+      - 'starter/backend/**'
+env: PYTHON_VERSION: '3.8'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: starter/backend
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v4
+
+      //use python to run the code
+    - name: run lint 
+      uses: actions/setup-python@v4
+      with:
+        node-version: ${{env.PYTHON_VERSION}}
+        cache: 'npm'
+
+    - name: Install pipenv and lint code 
+      run: |
+        pip install pipenv
+        pipenv install --dev
+        pipenv run lint
+  run-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: starter/backend
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v4
+
+    - name: Use Python
+      uses: actions/setup-python@v4
+      with:
+        node-version: ${{env.PYTHON_VERSION}}
+
+    - name: test job
+      run: |
+        pip install pipenv
+        pipenv install --dev
+        pipenv run test
+  build:
+    needs: [lint, run-test]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: starter/backend
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v4
+
+    - name: Use Python 
+      uses: actions/setup-python@v4
+      with:
+        node-version: ${{env.PYTHON_VERSION}}
+    - name: build job
+      run: |
+        pip install pipenv
+        pipenv install --dev
+        pipenv run build

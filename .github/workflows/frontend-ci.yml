@@ -1,4 +1,4 @@
-name: build-test-deploy_environments
+name: frontend-ci
 on:
   workflow_dispatch:
   push:
