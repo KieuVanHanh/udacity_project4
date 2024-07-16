@@ -71,6 +71,4 @@ jobs:
         node-version: ${{env.PYTHON_VERSION}}
     - name: build job
       run: |
-        pip install pipenv
-        pipenv install --dev
-        pipenv run build
+        docker build -t backend .
