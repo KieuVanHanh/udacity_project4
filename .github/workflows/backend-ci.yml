@@ -24,7 +24,7 @@ jobs:
     - name: Check out repository
       uses: actions/checkout@v4
 
-      //use python to run the code
+      #use python to run the code
     - name: run lint 
       uses: actions/setup-python@v4
       with:
