@@ -89,7 +89,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: build
+    needs: [lint, run-test]    
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -120,13 +120,6 @@ jobs:
         run: |
           docker build --build-arg REACT_APP_MOVIE_API_URL=$MOVIE_API_URL -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-
-      - name: Update Kubernetes deployment
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: project4
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
           cd starter/frontend/k8s
           aws eks update-kubeconfig --name project4 --region us-east-1
           kustomize edit set image frontend=$ECR_REPOSITORY:$IMAGE_TAG
