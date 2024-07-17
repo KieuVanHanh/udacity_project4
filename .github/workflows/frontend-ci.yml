@@ -13,7 +13,7 @@ on:
       - 'starter/frontend/**'
 env:
   # Set Node.js Version
-  NODE_VERSION: 'latest'
+  NODE_VERSION: '18.x'
 
 jobs:
   lint:
@@ -23,19 +23,20 @@ jobs:
         working-directory: starter/frontend
     steps:
     - name: Check out repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v3
 
     - name: Use Node.js 
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v3
       with:
         node-version: ${{env.NODE_VERSION}}
         cache: 'npm'
         cache-dependency-path: "starter/frontend/package-lock.json"
 
+    - name: Install Dependencies
+      run: npm ci
+
     - name: Lint job
-      run: |
-        npm ci
-        npm run lint
+      run: npm run lint
   run-test:
     runs-on: ubuntu-latest
     defaults:
@@ -43,10 +44,10 @@ jobs:
         working-directory: starter/frontend
     steps:
     - name: Check out repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v3
 
     - name: Use Node.js 
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v3
       with:
         node-version: ${{env.NODE_VERSION}}
         cache: 'npm'
@@ -64,10 +65,10 @@ jobs:
         working-directory: starter/frontend
     steps:
     - name: Check out repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v3
 
     - name: Use Node.js 
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v3
       with:
         node-version: ${{env.NODE_VERSION}}
         cache: 'npm'
