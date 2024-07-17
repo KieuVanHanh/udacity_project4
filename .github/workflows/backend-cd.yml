@@ -1,62 +1,64 @@
-name: frontend-cd
-
+name: backend-cd
 on:
   workflow_dispatch:
   push:
     branches: 
       - main
     paths:
-      - 'starter/frontend/**'
+      - 'starter/backend/**'
   pull_request:
     branches: 
       - main
     paths:
-      - 'starter/frontend/**'
+      - 'starter/backend/**'
+env:
+  PYTHON_VERSION: '3.8'
 
 jobs:
   lint:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: starter/frontend
+        working-directory: starter/backend
     steps:
     - name: Check out repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
-    - name: Use Node.js 
-      uses: actions/setup-node@v3
+      #use python to run the code
+    - name: run lint 
+      uses: actions/setup-python@v4
       with:
-        node-version: ${{env.NODE_VERSION}}
-        cache: 'npm'
-        cache-dependency-path: "starter/frontend/package-lock.json"
+        node-version: ${{env.PYTHON_VERSION}}
 
-    - name: Lint job
+    - name: Install pipenv and lint code 
       run: |
-        npm ci
-        npm run lint
-
+        pip install pipenv
+        pipenv install --dev
+        pipenv run lint
   run-test:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: starter/frontend
+        working-directory: starter/backend
     steps:
     - name: Check out repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
-    - name: Use Node.js 
-      uses: actions/setup-node@v3
+    - name: Use Python
+      uses: actions/setup-python@v4
       with:
-        node-version: ${{env.NODE_VERSION}}
-        cache: 'npm'
-        cache-dependency-path: "starter/frontend/package-lock.json"
+        node-version: ${{env.PYTHON_VERSION}}
 
-  deploy:
-    runs-on: ubuntu-latest
+    - name: test job
+      run: |
+        pip install pipenv
+        pipenv install --dev
+        pipenv run test
+  build-deploy:
+    needs: [lint, run-test]
     defaults:
       run:
-        working-directory: starter/frontend
-    needs: [lint, run-test]    
+        working-directory: starter/backend
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -81,7 +83,7 @@ jobs:
       - name: Build, tag, and push Docker image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: mp-frontend
+          ECR_REPOSITORY: mp-backend
           IMAGE_TAG: ${{ github.sha }}
           MOVIE_API_URL: ${{ secrets.REACT_APP_MOVIE_API_URL }}
           EKS_CLUSTER: project4
@@ -90,5 +92,5 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           cd k8s
           aws eks update-kubeconfig --name $EKS_CLUSTER --region us-east-1
-          kustomize edit set image frontend=$ECR_REPOSITORY:$IMAGE_TAG
+          kustomize edit set image backend=$ECR_REPOSITORY:$IMAGE_TAG
           kustomize build | kubectl apply -f -

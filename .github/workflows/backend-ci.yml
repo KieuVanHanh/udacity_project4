@@ -29,7 +29,6 @@ jobs:
       uses: actions/setup-python@v4
       with:
         node-version: ${{env.PYTHON_VERSION}}
-        cache: 'npm'
 
     - name: Install pipenv and lint code 
       run: |
