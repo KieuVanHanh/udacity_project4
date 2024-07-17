@@ -114,7 +114,7 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           cd starter/frontend/k8s
-          aws eks update-kubeconfig --name cluster --region us-east-1
+          aws eks update-kubeconfig --name project4 --region us-east-1
           kustomize edit set image frontend=$ECR_REPOSITORY:$IMAGE_TAG
           /# Apply the manifests to the cluster
           kustomize build | kubectl apply -f -
