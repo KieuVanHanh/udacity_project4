@@ -123,7 +123,7 @@ jobs:
         run: |
           docker build --build-arg REACT_APP_MOVIE_API_URL=$MOVIE_API_URL -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          cd starter/frontend/k8s
+          cd k8s
           aws eks update-kubeconfig --name project4 --region us-east-1
           kustomize edit set image frontend=$ECR_REPOSITORY:$IMAGE_TAG
           kustomize build | kubectl apply -f -
