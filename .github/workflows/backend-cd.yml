@@ -86,7 +86,7 @@ jobs:
       - name: Build, tag, and push Docker image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: mp-backend
+          ECR_REPOSITORY: project4
           IMAGE_TAG: ${{ github.sha }}
           MOVIE_API_URL: ${{ secrets.REACT_APP_MOVIE_API_URL }}
           EKS_CLUSTER: project4
