@@ -35,6 +35,7 @@ jobs:
         pip install pipenv
         pipenv install --dev
         pipenv run lint
+
   run-test:
     runs-on: ubuntu-latest
     defaults:
@@ -54,7 +55,9 @@ jobs:
         pip install pipenv
         pipenv install --dev
         pipenv run test
+
   build-deploy:
+    runs-on: ubuntu-latest
     needs: [lint, run-test]
     defaults:
       run:
