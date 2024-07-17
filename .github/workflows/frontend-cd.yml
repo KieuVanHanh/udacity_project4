@@ -99,6 +99,14 @@ jobs:
         with:
           version: 'v1.18.0'
 
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{secrets.AWS_SESSION_TOKEN}}
+          aws-region: us-east-1
+        
       - name: Update Kubernetes deployment
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -108,3 +116,5 @@ jobs:
           cd starter/frontend/k8s
           aws eks update-kubeconfig --name cluster --region us-east-1
           kustomize edit set image frontend=$ECR_REPOSITORY:$IMAGE_TAG
+          /# Apply the manifests to the cluster
+          kustomize build | kubectl apply -f -
