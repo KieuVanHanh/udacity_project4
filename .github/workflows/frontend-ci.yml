@@ -122,5 +122,5 @@ jobs:
         npm run test
 
     - name: Build docker image
-        run: |
-          docker build --build-arg=REACT_APP_MOVIE_API_URL=${{ env.REACT_APP_MOVIE_API_URL }} -t frontend:${GITHUB_SHA} .
+      run: |
+        docker build --build-arg=REACT_APP_MOVIE_API_URL=${{ env.REACT_APP_MOVIE_API_URL }} -t frontend:${GITHUB_SHA} .
