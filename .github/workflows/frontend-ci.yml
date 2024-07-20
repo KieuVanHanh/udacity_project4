@@ -22,67 +22,67 @@ jobs:
       run:
         working-directory: starter/frontend
     steps:
-    - name: Check out repository
-      uses: actions/checkout@v3
+      - name: Check out repository
+        uses: actions/checkout@v3
 
-    - name: Use Node.js 
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{env.NODE_VERSION}}
-        cache: 'npm'
-        cache-dependency-path: "starter/frontend/package-lock.json"
+      - name: Use Node.js 
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{env.NODE_VERSION}}
+          cache: 'npm'
+          cache-dependency-path: "starter/frontend/package-lock.json"
 
-    - name: Cache node modules
-      id: cache-node-modules
-      uses: actions/cache@v2
-      with:
-        path: starter/frontend/node_modules
-        key: ${{ runner.os }}-node-${{ hashFiles('starter/frontend/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
-    
-    - name: Validate Cache
-      if: steps.cache-node-modules.outputs.cache-hit != 'true'
-      run: |
-        echo "Cache miss, installing dependencies..."
-        npm ci
+      - name: Cache node modules
+        id: cache-node-modules
+        uses: actions/cache@v2
+        with:
+          path: starter/frontend/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('starter/frontend/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
-    - name: Lint job
-      run: npm run lint
+      - name: Validate Cache
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: |
+          echo "Cache miss, installing dependencies..."
+          npm ci
+
+      - name: Lint job
+        run: npm run lint
   run-test:
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: starter/frontend
     steps:
-    - name: Check out repository
-      uses: actions/checkout@v3
-
-    - name: Use Node.js 
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{env.NODE_VERSION}}
-        cache: 'npm'
-        cache-dependency-path: "starter/frontend/package-lock.json"
-    
-     - name: Cache node modules
-      id: cache-node-modules
-      uses: actions/cache@v2
-      with:
-        path: starter/frontend/node_modules
-        key: ${{ runner.os }}-node-${{ hashFiles('starter/frontend/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
-    
-    - name: Validate Cache
-      if: steps.cache-node-modules.outputs.cache-hit != 'true'
-      run: |
-        echo "Cache miss, installing dependencies..."
-        npm ci
-    
-    - name: test job
-      run: |
-        npm run test
+      - name: Check out repository
+        uses: actions/checkout@v3
+  
+      - name: Use Node.js 
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{env.NODE_VERSION}}
+          cache: 'npm'
+          cache-dependency-path: "starter/frontend/package-lock.json"
+      
+      - name: Cache node modules
+        id: cache-node-modules
+        uses: actions/cache@v2
+        with:
+          path: starter/frontend/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('starter/frontend/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      
+      - name: Validate Cache
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: |
+          echo "Cache miss, installing dependencies..."
+          npm ci
+      
+      - name: test job
+        run: |
+          npm run test
   build:
     needs: [lint, run-test]
     runs-on: ubuntu-latest
