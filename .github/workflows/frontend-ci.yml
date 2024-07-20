@@ -49,7 +49,6 @@ jobs:
 
     - name: Lint job
       run: npm run lint
-
   run-test:
     runs-on: ubuntu-latest
     defaults:
@@ -84,7 +83,6 @@ jobs:
     - name: test job
       run: |
         npm run test
-
   build:
     needs: [lint, run-test]
     runs-on: ubuntu-latest
