@@ -5,7 +5,7 @@
 
 <a href ="https://github.com/KieuVanHanh/udacity_project4"><code>github<code/></a>
 
-
+REACT_APP_MOVIE_API_URL = 582042331487.dkr.ecr.us-east-1.amazonaws.com/project4
 
 
 

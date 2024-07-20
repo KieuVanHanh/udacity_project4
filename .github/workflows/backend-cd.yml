@@ -91,8 +91,8 @@ jobs:
           MOVIE_API_URL: ${{ secrets.REACT_APP_MOVIE_API_URL }}
           EKS_CLUSTER: project4
         run: |
-          docker build --build-arg REACT_APP_MOVIE_API_URL=$MOVIE_API_URL -t backend:$IMAGE_TAG .
-          docker push backend:$IMAGE_TAG
+          docker build --build-arg REACT_APP_MOVIE_API_URL=$MOVIE_API_URL -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           cd k8s
           aws eks update-kubeconfig --name $EKS_CLUSTER --region us-east-1
           kustomize edit set image backend=$ECR_REPOSITORY:$IMAGE_TAG
