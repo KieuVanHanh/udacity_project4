@@ -50,7 +50,6 @@ jobs:
     - name: Lint job
       run: npm run lint
 
-    
   run-test:
     runs-on: ubuntu-latest
     defaults:
