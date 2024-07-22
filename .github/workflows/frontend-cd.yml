@@ -83,7 +83,7 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: project4
           IMAGE_TAG: ${{ github.sha }}
-          MOVIE_API_URL: ${{ secrets.REACT_APP_MOVIE_API_URL }}
+          MOVIE_API_URL: ab2c3125f33fc411a9eccfc208a6f9cd-795360364.us-east-1.elb.amazonaws.com
           EKS_CLUSTER: project4
         run: |
           docker build -t --build-arg REACT_APP_MOVIE_API_URL=$MOVIE_API_URL $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
