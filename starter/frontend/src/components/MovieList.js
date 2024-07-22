@@ -7,13 +7,14 @@ function MovieList({ onMovieClick }) {
 
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_MOVIE_API_URL}/movies`).then((response) => {
+      console.log('response', response);
       setMovies(response.data.movies);
     });
   }, []);
-
+  console.log('MOVIES', movies);
   return (
     <ul>
-      {movies.map((movie) => (
+      {movies && movies.map((movie) => (
         <li className="movieItem" key={movie.id} onClick={() => onMovieClick(movie)}>
           {movie.title}
         </li>
