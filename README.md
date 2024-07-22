@@ -5,7 +5,9 @@
 
 <a href ="https://github.com/KieuVanHanh/udacity_project4"><code>github<code/></a>
 
-REACT_APP_MOVIE_API_URL = 582042331487.dkr.ecr.us-east-1.amazonaws.com/project4
+REACT_APP_MOVIE_API_URL = http://ab2c3125f33fc411a9eccfc208a6f9cd-795360364.us-east-1.elb.amazonaws.com/
+
+FRONT_END URL : http://aec51f68124aa41198e8c96076b174ee-42487482.us-east-1.elb.amazonaws.com/
 
 
 
