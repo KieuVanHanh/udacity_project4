@@ -89,11 +89,10 @@ jobs:
           ECR_REPOSITORY: project4
           IMAGE_TAG: ${{ github.sha }}
           EKS_CLUSTER: project4
-          REPO_NAME: project4
         run: |
-          docker build --tag ${{secrets.AWS_USER_ID}}.dkr.ecr.us-east-1.amazonaws.com/$REPO_NAME:$IMAGE_TAG .
-          docker push ${{secrets.AWS_USER_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/$REPO_NAME:$IMAGE_TAG
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           cd k8s
           aws eks update-kubeconfig --name $EKS_CLUSTER --region us-east-1
-          kustomize edit set image backend=${{secrets.AWS_USER_ID}}.dkr.ecr.us-east-1.amazonaws.com/$REPO_NAME:$IMAGE_TAG
+          kustomize edit set image backend=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           kustomize build | kubectl apply -f -
