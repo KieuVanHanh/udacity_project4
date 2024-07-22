@@ -90,5 +90,5 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           cd k8s
           aws eks update-kubeconfig --name $EKS_CLUSTER --region us-east-1
-          kustomize edit set image frontend=$ECR_REPOSITORY:$IMAGE_TAG
+          kustomize edit set image frontend=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           kustomize build | kubectl apply -f -
